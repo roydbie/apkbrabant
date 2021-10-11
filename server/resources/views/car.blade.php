@@ -16,6 +16,8 @@
         <style>
             body {
                 font-size: 0.75rem;
+                background-color: #EEF3F6;
+                font-family: 'Rubik', sans-serif;
             }
         </style>
     </head>

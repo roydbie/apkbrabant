@@ -17,6 +17,9 @@ use App\Http\Controllers\CarController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/agenda', function () {
+    return view('agenda');
+});
 
 Route::get('/kentekensearch', function () {
     return view('kentekensearch');
