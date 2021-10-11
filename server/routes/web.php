@@ -18,8 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/auto-toevoegen', function () {
-    return view('auto-toevoegen');
+Route::get('/kentekensearch', function () {
+    return view('kentekensearch');
 });
 
 Route::get('/car/{id}', [CarController::class, 'details']);
