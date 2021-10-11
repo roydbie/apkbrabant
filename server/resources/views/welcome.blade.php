@@ -35,7 +35,7 @@ $route = $_GET['route'];
     <?php
     require __DIR__. '/menubar.php';
 
-    print "<h1 class=\"text-center my-3\">" . ucfirst($route) . "</h1>";
+    print "<br><br>";
 
     require __DIR__. '/' . $route . '.php';
 

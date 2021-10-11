@@ -30,7 +30,7 @@
     require __DIR__. '/menubar.php';
     ?>
 
-        <h1>hier moet het kenteken komen <?php print $_GET["kenteken"] ?></h1>
+        <h1 style="margin-left:50px;margin-top:20px;">hier moet het kenteken komen <?php print $_GET["kenteken"] ?></h1>
 
 
     </body>
