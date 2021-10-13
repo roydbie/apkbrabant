@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
 
@@ -26,3 +27,9 @@ Route::get('/kentekensearch', function () {
 });
 
 Route::get('/car/{id}', [CarController::class, 'details']);
+Route::get('/kentekensearch/kenteken={kenteken}', [CarController::class, 'show']);
+
+Route::get('/test/', function () {
+    $test = DB::select("SELECT werkzaamheden FROM planning WHERE kenteken = 'zjrb32'");
+    return $test[0];
+});
