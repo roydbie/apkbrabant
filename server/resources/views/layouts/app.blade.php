@@ -18,7 +18,7 @@
         <!-- Styles -->
         <style>
             body {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
                 background-color: #EEF3F6;
                 font-family: 'Rubik', sans-serif;
             }

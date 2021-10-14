@@ -18,6 +18,7 @@ use App\Http\Controllers\CarController;
 Route::get('/', function () {
     return view('welcome');
 });
+
 Route::get('/agenda', function () {
     return view('agenda');
 });
@@ -26,10 +27,9 @@ Route::get('/kentekensearch', function () {
     return view('kentekensearch');
 });
 
-Route::get('/car/{id}', [CarController::class, 'details']);
-Route::get('/kentekensearch/kenteken={kenteken}', [CarController::class, 'show']);
-
-Route::get('/test/', function () {
-    $test = DB::select("SELECT werkzaamheden FROM planning WHERE kenteken = 'zjrb32'");
-    return $test[0];
+Route::get('/nieuw_werkorder', function () {
+    return view('nieuw_werkorder');
 });
+
+Route::get('/kentekensearch/kenteken={kenteken}', [CarController::class, 'show']);
+Route::get('/nieuw_werkorder/kenteken={kenteken}/werkzaamheden={werkzaamheden}/datum={datum}/tijd={tijd}/kosten={kosten}', [CarController::class, 'insert']);

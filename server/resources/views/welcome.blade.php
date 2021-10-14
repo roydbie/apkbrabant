@@ -40,19 +40,19 @@
 <div id="containment-wrapper">
     <div id="car1" class="draggable ui-widget-content">
         <img src="/img/brands/bmw.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-warning my-4 btn-sm" onclick="window.location.href='/car/ZJ-RB-32'">ZJ-RB-32</button>
+        <button class="btn btn-warning my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=zjrb32'">ZJ-RB-32</button>
     </div>
     <div id="car2" class="draggable ui-widget-content">
         <img src="/img/brands/volvo.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-success my-4 btn-sm" onclick="window.location.href='/car/26-XL-JH'">26-XL-JH</button>
+        <button class="btn btn-success my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=26xljh'">26-XL-JH</button>
     </div>
     <div id="car3" class="draggable ui-widget-content">
         <img src="/img/brands/mercedes.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-warning my-4 btn-sm" onclick="window.location.href='/car/21-VRG-3'">21-VRG-3</button>
+        <button class="btn btn-warning my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=21vrg3'">21-VRG-3</button>
     </div>
     <div id="car4" class="draggable ui-widget-content">
         <img src="/img/brands/peugeot.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-danger my-4 btn-sm" onclick="window.location.href='/car/SP-GH-03'">SP-GH-03</button>
+        <button class="btn btn-danger my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=spgh03'">SP-GH-03</button>
     </div>
 </div>
 

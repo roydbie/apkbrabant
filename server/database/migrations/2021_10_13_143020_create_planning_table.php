@@ -19,9 +19,7 @@ class CreatePlanningTable extends Migration
             $table->string('werkzaamheden');
             $table->date('datum');
             $table->time('tijd');
-            $table->date('melddatum');
-            $table->time('meldtijd');
-            $table->timestamps();
+            $table->float('kosten');
         });
     }
 
