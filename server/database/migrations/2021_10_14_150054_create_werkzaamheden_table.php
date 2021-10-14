@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlanningTable extends Migration
+class CreateWerkzaamhedenTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreatePlanningTable extends Migration
      */
     public function up()
     {
-        Schema::create('planning', function (Blueprint $table) {
+        Schema::create('werkzaamheden', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('kenteken');
-            $table->string('werkzaamheden');
-            $table->date('datum');
-            $table->time('tijd');
-            $table->float('kosten');
-            $table->string('status');
+            $table->string('omschrijving');
+            $table->boolean('actief');
         });
     }
 
@@ -31,6 +27,6 @@ class CreatePlanningTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('planning');
+        Schema::dropIfExists('werkzaamheden');
     }
 }

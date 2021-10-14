@@ -20,11 +20,15 @@
                 font-size:0.8rem;
                 text-align:left!important;
             }
+
+            .btn {
+                font-size: 0.8rem;
+            }
         </style>
 
         <div id="containment-wrapper">
             <div class="mt-2">
-                <button class="btn btn-warning" onclick="location.href='/nieuw_werkorder?kenteken={{$kenteken}}';">Nieuw werkorder</button>
+                <button class="btn btn-success" onclick="location.href='/nieuw_werkorder?kenteken={{$kenteken}}';">Werkorder aanmaken</button>
                 <button class="btn btn-warning" onclick="">Iets anders</button>
             </div>
             <h1 style="margin-top:20px;">{{strtoupper($kenteken)}}</h1>
@@ -37,6 +41,8 @@
                             <th scope="col">Datum</th>
                             <th scope="col">Tijd</th>
                             <th scope="col">Kosten</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +53,8 @@
                             <td>{{date("d-m-Y", strtotime($werkorder->datum))}}</td>
                             <td>{{$werkorder->tijd}}</td>
                             <td>&euro;{{$werkorder->kosten}} ex. BTW</td>
+                            <td>{{$werkorder->status}}</td>
+                            <td><button class="btn btn-danger btn-sm" onclick="verwijderWerkorder('{{$werkorder->kenteken}}', {{$werkorder->id}})">x</button></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -56,6 +64,19 @@
             @endif
 
         </div>
+
+        <script>
+            function verwijderWerkorder(kenteken, id) {
+                if (window.confirm("Weet u zeker dat u dit werkorder wilt verwijderen?"))
+                {
+                    location.href = `/verwijder_werkorder/kenteken=${kenteken}/id=${id}`;
+                }
+                else
+                {
+                    // They clicked no
+                }
+            }
+        </script>
 
 
 

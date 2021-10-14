@@ -19,11 +19,16 @@ class CarController extends Controller
         return view('car', ['id' => $id]);
     }
 
-    public function insert($kenteken, $werkzaamheden, $datum, $tijd, $kosten)
+    public function insert($kenteken, $werkzaamheden, $datum, $tijd, $kosten, $status)
     {
         $nieuwe_kosten = str_replace("-", ".", $kosten);
-        DB::insert("INSERT INTO planning (kenteken, werkzaamheden, datum, tijd, kosten) values ('$kenteken', '$werkzaamheden', '$datum', '$tijd', '$nieuwe_kosten')");
-        $werkorders = DB::select("SELECT * FROM planning WHERE kenteken = '$kenteken'");
+        DB::insert("INSERT INTO planning (kenteken, werkzaamheden, datum, tijd, kosten, status) values ('$kenteken', '$werkzaamheden', '$datum', '$tijd', '$nieuwe_kosten', '$status')");
+        return redirect("/kentekensearch/kenteken=$kenteken");
+    }
+
+    public function delete($kenteken, $id)
+    {
+        DB::delete("DELETE FROM planning WHERE id = '$id'");
         return redirect("/kentekensearch/kenteken=$kenteken");
     }
 }

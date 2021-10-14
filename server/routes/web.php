@@ -32,4 +32,5 @@ Route::get('/nieuw_werkorder', function () {
 });
 
 Route::get('/kentekensearch/kenteken={kenteken}', [CarController::class, 'show']);
-Route::get('/nieuw_werkorder/kenteken={kenteken}/werkzaamheden={werkzaamheden}/datum={datum}/tijd={tijd}/kosten={kosten}', [CarController::class, 'insert']);
+Route::get('/nieuw_werkorder/kenteken={kenteken}/werkzaamheden={werkzaamheden}/datum={datum}/tijd={tijd}/kosten={kosten}/status={status}', [CarController::class, 'insert']);
+Route::get('/verwijder_werkorder/kenteken={kenteken}/id={id}', [CarController::class, 'delete']);

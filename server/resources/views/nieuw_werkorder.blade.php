@@ -1,3 +1,22 @@
+    <?php
+    use Illuminate\Support\Facades\DB;
+    $results = DB::select('select omschrijving from artikelen');
+    for ($i = 0; $i < count($results); $i++) {
+        echo $results[$i]->omschrijving;
+    }
+
+    date_default_timezone_set("Europe/Amsterdam");
+
+    $month = date('m');
+    $day = date('d');
+    $year = date('Y');
+
+    $today = $year . '-' . $month . '-' . $day;
+
+    $currenttime = date("H:i");
+
+    ?>
+
     @extends('layouts.app')
 
     @section('content')
@@ -31,20 +50,28 @@
             <div class="form-nieuw-werkorder">
                 <div class="form-group">
                     <label for="inputWerkzaamheden">Werkzaamheden</label>
-                    <input type="text" class="form-control" id="inputWerkzaamheden" name="werkzaamheden">
+                    <input type="text" class="form-control" id="inputWerkzaamheden" name="werkzaamheden" style="width:160px;">
                 </div>
                 <div class="form-group">
                     <label for="inputDatum">Datum</label>
-                    <input type="date" class="form-control" id="inputDatum" name="datum" style="width:160px;">
+                    <input type="date" value="<?php echo $today; ?>" class="form-control" id="inputDatum" name="datum" style="width:160px;">
                 </div>
                 <div class="form-group">
                     <label for="inputTijd">Tijd</label>
-                    <input type="time" class="form-control" id="inputTijd" name="tijd" style="width:160px;">
+                    <input type="time" value="<?php echo $currenttime; ?>"class="form-control" id="inputTijd" name="tijd" style="width:160px;">
                 </div>
                 <div class="form-group">
                     <label for="inputKosten">Kosten</label>
                     <input type="float" class="form-control" id="inputKosten" name="kosten" style="width:100px;">
                 </div>
+                <div class="form-group">
+                    <label for="inputStatus">Status</label>
+                    <select class="form-select" id="inputStatus" name="status" style="width:100px;font-size:0.8rem;">
+                        <option value="done" selected>Done</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+
                 <br>
                 <button
                     type="submit"
@@ -56,7 +83,7 @@
             </div>
 
             <?php
-            $kenteken = $_GET["kenteken"]
+            $kenteken = $_GET["kenteken"];
             ?>
 
             <script>
@@ -67,9 +94,10 @@
                     var werkzaamheden = document.getElementById('inputWerkzaamheden').value;
                     var datum = document.getElementById('inputDatum').value;
                     var tijd = document.getElementById('inputTijd').value;
-                    var kosten = document.getElementById('inputKosten').value.replace(".", "-");
+                    var status = document.getElementById('inputStatus').value;
+                    var kosten = document.getElementById('inputKosten').value.replace(",", "-");
 
-                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/datum=${datum}/tijd=${tijd}/kosten=${kosten}`;
+                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/datum=${datum}/tijd=${tijd}/kosten=${kosten}/status=${status}`;
                 }
             </script>
 
