@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlanningTable extends Migration
+class CreateAutosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreatePlanningTable extends Migration
      */
     public function up()
     {
-        Schema::create('planning', function (Blueprint $table) {
+        Schema::create('autos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kenteken');
-            $table->string('werkzaamheden');
-            $table->date('datum');
-            $table->time('tijd');
-            $table->float('kosten');
-            $table->integer('kilometerstand');
-            $table->string('status');
+            $table->string('merk');
+            $table->string('type');
+            $table->integer('meldcode');
         });
     }
 
@@ -32,6 +29,6 @@ class CreatePlanningTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('planning');
+        Schema::dropIfExists('autos');
     }
 }

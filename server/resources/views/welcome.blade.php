@@ -1,3 +1,17 @@
+<?php
+use Illuminate\Support\Facades\DB;
+$results = DB::select("SELECT * FROM planning WHERE status = 'pending'");
+$arrayPending = [];
+for ($i = 0; $i < count($results); $i++) {
+    array_push($arrayPending, $results[$i]->kenteken);
+}
+$filteredarrayPending = array_unique($arrayPending);
+foreach ($filteredarrayPending as $key => $value){
+    //echo $value;
+}
+
+?>
+
 @extends('layouts.app')
 
 @section('content')
@@ -23,10 +37,6 @@
         border:none;
         background-color: #f5f5f5!important;
         border-radius: 10px;
-        /* background-image: url("/img/car.png");*/
-        /* background-position: center; /* Center the image */
-        /* background-repeat: no-repeat; /* Do not repeat the image */
-        /* background-size: cover; /* Resize the background image to cover the entire container */
     }
 
     .brand {
@@ -38,26 +48,21 @@
 </style>
 
 <div id="containment-wrapper">
-    <div id="car1" class="draggable ui-widget-content">
-        <img src="/img/brands/bmw.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-warning my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=zjrb32'">ZJ-RB-32</button>
-    </div>
-    <div id="car2" class="draggable ui-widget-content">
-        <img src="/img/brands/volvo.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-success my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=26xljh'">26-XL-JH</button>
-    </div>
-    <div id="car3" class="draggable ui-widget-content">
-        <img src="/img/brands/mercedes.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-warning my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=21vrg3'">21-VRG-3</button>
-    </div>
-    <div id="car4" class="draggable ui-widget-content">
-        <img src="/img/brands/peugeot.png" class="brand" alt="notfound"><br>
-        <button class="btn btn-danger my-4 btn-sm" onclick="window.location.href='/kentekensearch/kenteken=spgh03'">SP-GH-03</button>
-    </div>
+    <?php
+        for ($i = 0; $i < count($filteredarrayPending); $i++) {
+            $merk = DB::select("SELECT merk FROM autos WHERE kenteken = '$filteredarrayPending[$i]'");
+            $merklogo = $merk[0]->merk;
+            print "<div id=\"car$i\" class=\"draggable ui-widget-content\">";
+            print "<img src=\"/img/brands/$merklogo.png\" class=\"brand\" alt=\"notfound\"><br>";
+            print "<button class=\"btn btn-success my-4 btn-sm\" onclick=\"window.location.href='/kentekensearch/kenteken=$filteredarrayPending[$i]'\">$filteredarrayPending[$i]</button>";
+            print "</div>";
+        }
+    ?>
 </div>
 
 <script>
     function onLoad() {
+        $("#car0").offset({top: localStorage.getItem("car0positieY"), left: localStorage.getItem("car0positieX")});
         $("#car1").offset({top: localStorage.getItem("car1positieY"), left: localStorage.getItem("car1positieX")});
         $("#car2").offset({top: localStorage.getItem("car2positieY"), left: localStorage.getItem("car2positieX")});
         $("#car3").offset({top: localStorage.getItem("car3positieY"), left: localStorage.getItem("car3positieX")});
@@ -65,11 +70,23 @@
     }
 
     $( function() {
+        $( "#car0" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#car1" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#car2" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#car3" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#car4" ).draggable({ containment: "#containment-wrapper", scroll: false });
     } );
+
+    $('#car0').draggable(
+        {
+            drag: function(){
+                var offset = $(this).offset();
+                var xPos = offset.left;
+                var yPos = offset.top;
+                localStorage.setItem("car0positieX", xPos);
+                localStorage.setItem("car0positieY", yPos);
+            }
+        });
 
     $('#car1').draggable(
         {

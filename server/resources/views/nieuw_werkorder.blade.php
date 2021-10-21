@@ -2,7 +2,7 @@
     use Illuminate\Support\Facades\DB;
     $results = DB::select('select omschrijving from artikelen');
     for ($i = 0; $i < count($results); $i++) {
-        echo $results[$i]->omschrijving;
+        //echo $results[$i]->omschrijving;
     }
 
     date_default_timezone_set("Europe/Amsterdam");
@@ -50,7 +50,7 @@
             <div class="form-nieuw-werkorder">
                 <div class="form-group">
                     <label for="inputWerkzaamheden">Werkzaamheden</label>
-                    <input type="text" class="form-control" id="inputWerkzaamheden" name="werkzaamheden" style="width:160px;">
+                    <input type="text" class="form-control" id="inputWerkzaamheden" name="werkzaamheden" style="width:300px;">
                 </div>
                 <div class="form-group">
                     <label for="inputDatum">Datum</label>
@@ -65,6 +65,10 @@
                     <input type="float" class="form-control" id="inputKosten" name="kosten" style="width:100px;">
                 </div>
                 <div class="form-group">
+                    <label for="inputKilometerstand">Kilometerstand</label>
+                    <input type="text" class="form-control" id="inputKilometerstand" name="kilometerstand" maxlength="6" style="width:100px;">
+                </div>
+                <div class="form-group">
                     <label for="inputStatus">Status</label>
                     <select class="form-select" id="inputStatus" name="status" style="width:100px;font-size:0.8rem;">
                         <option value="done" selected>Done</option>
@@ -76,10 +80,10 @@
                 <button
                     type="submit"
                     name="submit"
-                    class="btn btn-primary"
+                    class="btn btn-success"
                     style="font-size:0.80rem;"
                     onclick="Redirect();"
-                >Submit</button>
+                >Werkorder aanmaken</button>
             </div>
 
             <?php
@@ -95,9 +99,18 @@
                     var datum = document.getElementById('inputDatum').value;
                     var tijd = document.getElementById('inputTijd').value;
                     var status = document.getElementById('inputStatus').value;
-                    var kosten = document.getElementById('inputKosten').value.replace(",", "-");
+                    if(document.getElementById('inputKosten').value == '') {
+                        var kosten = '0-00';
+                    } else {
+                        var kosten = document.getElementById('inputKosten').value.replace(",", "-");
+                    }
+                    if(document.getElementById('inputKilometerstand').value == '') {
+                        var kilometerstand = '000000';
+                    } else {
+                        var kilometerstand = document.getElementById('inputKilometerstand').value;
+                    }
 
-                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/datum=${datum}/tijd=${tijd}/kosten=${kosten}/status=${status}`;
+                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/datum=${datum}/tijd=${tijd}/kosten=${kosten}/status=${status}/kilometerstand=${kilometerstand}`;
                 }
             </script>
 
