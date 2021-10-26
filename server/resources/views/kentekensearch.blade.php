@@ -46,10 +46,10 @@
                             <th scope="col">Werkzaamheden</th>
                             <th scope="col">Datum</th>
                             <th scope="col">Tijd</th>
-                            <th scope="col">Kosten</th>
+                            <th scope="col">Kosten ex. BTW</th>
                             <th scope="col">Bij km. stand</th>
                             <th scope="col">Status</th>
-                            <th scope="col"></th>
+                            <th scope="col">Verander status naar:</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,16 +58,17 @@
                             <th scope="row">{{$werkorder->id}}</th>
                             <td>{{$werkorder->werkzaamheden}}</td>
                             <td>{{date("d-m-Y", strtotime($werkorder->datum))}}</td>
-                            <td>{{$werkorder->tijd}}</td>
-                            <td>&euro;{{$werkorder->kosten}} ex. BTW</td>
+                            <td>{{date("H:m", strtotime($werkorder->tijd))}}</td>
+                            <td>&euro;{{$werkorder->kosten}}</td>
                             <td>{{$werkorder->kilometerstand}}</td>
                             <td>{{$werkorder->status}}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm" onclick="verwijderWerkorder('{{$werkorder->kenteken}}', {{$werkorder->id}})">x</button>
-                                @if ($werkorder->status == 'done')
-                                <button class="btn btn-warning btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'pending')">Maak pending</button>
-                                @elseif ($werkorder->status == 'pending')
-                                <button class="btn btn-warning btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'done')">Maak done</button>
+                                @if ($werkorder->status == 'gerepareerd')
+                                    <button class="btn btn-warning btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'opgehaald')">Opgehaald</button>
+                                @elseif ($werkorder->status == 'in afwachting')
+                                    <button class="btn btn-warning btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'gerepareerd')">Gerepareerd</button>
+                                @elseif ($werkorder->status == 'opgehaald')
+                                    <button class="btn btn-danger btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'in afwachting')">Reset status</button>
                                 @endif
                             </td>
                         </tr>

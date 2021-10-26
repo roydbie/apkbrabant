@@ -1,13 +1,21 @@
 <?php
 use Illuminate\Support\Facades\DB;
-$results = DB::select("SELECT * FROM planning WHERE status = 'pending'");
+$results = DB::select("SELECT * FROM planning WHERE status = 'in afwachting' OR status = 'gerepareerd'");
 $arrayPending = [];
 for ($i = 0; $i < count($results); $i++) {
-    array_push($arrayPending, $results[$i]->kenteken);
+    array_push($arrayPending, (object) ['kenteken' => $results[$i]->kenteken, 'status' => $results[$i]->status]);
 }
-$filteredarrayPending = array_unique($arrayPending);
-foreach ($filteredarrayPending as $key => $value){
-    //echo $value;
+$filteredarrayPending = [];
+for ($i = 0; $i < count($arrayPending); $i++) {
+    if(count($filteredarrayPending)){
+        if ($arrayPending[$i]->kenteken == end($filteredarrayPending)->kenteken){
+            //
+        } else {
+            array_push($filteredarrayPending, $arrayPending[$i]);
+        }
+    } else {
+        array_push($filteredarrayPending, $arrayPending[$i]);
+    }
 }
 
 ?>
@@ -50,11 +58,22 @@ foreach ($filteredarrayPending as $key => $value){
 <div id="containment-wrapper">
     <?php
         for ($i = 0; $i < count($filteredarrayPending); $i++) {
-            $merk = DB::select("SELECT merk FROM autos WHERE kenteken = '$filteredarrayPending[$i]'");
-            $merklogo = $merk[0]->merk;
+            $kenteken = $filteredarrayPending[$i]->kenteken;
+            $merk = DB::select("SELECT merk FROM autos WHERE kenteken = '$kenteken'");
+
             print "<div id=\"car$i\" class=\"draggable ui-widget-content\">";
-            print "<img src=\"/img/brands/$merklogo.png\" class=\"brand\" alt=\"notfound\"><br>";
-            print "<button class=\"btn btn-success my-4 btn-sm\" onclick=\"window.location.href='/kentekensearch/kenteken=$filteredarrayPending[$i]'\">$filteredarrayPending[$i]</button>";
+            if($merk){
+                $merklogo = $merk[0]->merk;
+                print "<img src=\"/img/brands/$merklogo.png\" class=\"brand\" alt=\"notfound\"><br>";
+            } else {
+                print "<p style=\"font-size:30px;margin-top:25px;margin-bottom:0;\">&#10060;</p>";
+            }
+            if($filteredarrayPending[$i]->status == 'in afwachting'){
+                print "<button class=\"btn btn-danger my-4 btn-sm\" onclick=\"window.location.href='/kentekensearch/kenteken=$kenteken'\">$kenteken</button>";
+            } elseif($filteredarrayPending[$i]->status == 'gerepareerd') {
+                print "<button class=\"btn btn-success my-4 btn-sm\" onclick=\"window.location.href='/kentekensearch/kenteken=$kenteken'\">$kenteken</button>";
+            }
+
             print "</div>";
         }
     ?>

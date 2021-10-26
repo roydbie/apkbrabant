@@ -70,9 +70,10 @@
                 </div>
                 <div class="form-group">
                     <label for="inputStatus">Status</label>
-                    <select class="form-select" id="inputStatus" name="status" style="width:100px;font-size:0.8rem;">
-                        <option value="done" selected>Done</option>
-                        <option value="pending">Pending</option>
+                    <select class="form-select" id="inputStatus" name="status" style="width:150px;font-size:0.8rem;">
+                        <option value="in afwachting" selected>In afwachting</option>
+                        <option value="gerepareerd">Gerepareerd</option>
+                        <option value="opgehaald">Opgehaald</option>
                     </select>
                 </div>
 
