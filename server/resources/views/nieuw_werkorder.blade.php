@@ -50,7 +50,12 @@
             <div class="form-nieuw-werkorder">
                 <div class="form-group">
                     <label for="inputWerkzaamheden">Werkzaamheden</label>
-                    <input type="text" class="form-control" id="inputWerkzaamheden" name="werkzaamheden" style="width:300px;">
+                    <select class="form-select" id="inputWerkzaamheden" name="werkzaamheden" style="width:300px;font-size:0.8rem;">
+                        <option value="Reparatie" selected>Reparatie</option>
+                        <option value="Kleine beurt">Kleine beurt</option>
+                        <option value="Grote beurt">Grote beurt</option>
+                        <option value="APK keuring">APK Keuring</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="inputDatum">Datum</label>
@@ -59,10 +64,6 @@
                 <div class="form-group">
                     <label for="inputTijd">Tijd</label>
                     <input type="time" value="<?php echo $currenttime; ?>"class="form-control" id="inputTijd" name="tijd" style="width:160px;">
-                </div>
-                <div class="form-group">
-                    <label for="inputKosten">Kosten</label>
-                    <input type="float" class="form-control" id="inputKosten" name="kosten" style="width:100px;">
                 </div>
                 <div class="form-group">
                     <label for="inputKilometerstand">Kilometerstand</label>
@@ -100,18 +101,13 @@
                     var datum = document.getElementById('inputDatum').value;
                     var tijd = document.getElementById('inputTijd').value;
                     var status = document.getElementById('inputStatus').value;
-                    if(document.getElementById('inputKosten').value == '') {
-                        var kosten = '0-00';
-                    } else {
-                        var kosten = document.getElementById('inputKosten').value.replace(",", "-");
-                    }
                     if(document.getElementById('inputKilometerstand').value == '') {
                         var kilometerstand = '000000';
                     } else {
                         var kilometerstand = document.getElementById('inputKilometerstand').value;
                     }
 
-                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/datum=${datum}/tijd=${tijd}/kosten=${kosten}/status=${status}/kilometerstand=${kilometerstand}`;
+                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/datum=${datum}/tijd=${tijd}/status=${status}/kilometerstand=${kilometerstand}`;
                 }
             </script>
 

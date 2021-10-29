@@ -12,7 +12,15 @@ class CarController extends Controller
     {
         $werkorders = DB::select("SELECT * FROM planning WHERE kenteken = '$kenteken'");
         $autoinfo = DB::select("SELECT * FROM autos WHERE kenteken = '$kenteken'");
-        return view('kentekensearch', ['werkorders' => $werkorders, 'kenteken' => $kenteken, 'autoinfo' => $autoinfo]);
+        $subwerkorders = [];
+        foreach ($werkorders as $werkorder){
+            $subwerkorders_temp = DB::select("SELECT * FROM werkorders WHERE planning_id = '$werkorder->id'");
+            foreach ($subwerkorders_temp as $subwerkorder) {
+                array_push($subwerkorders, $subwerkorder);
+            }
+        }
+
+        return view('kentekensearch', ['werkorders' => $werkorders, 'kenteken' => $kenteken, 'autoinfo' => $autoinfo, 'subwerkorders' => $subwerkorders]);
     }
 
     public function details($id)
@@ -20,10 +28,21 @@ class CarController extends Controller
         return view('car', ['id' => $id]);
     }
 
-    public function insert($kenteken, $werkzaamheden, $datum, $tijd, $kosten, $status, $kilometerstand)
+    public function insert($kenteken, $werkzaamheden, $datum, $tijd, $status, $kilometerstand)
     {
-        $nieuwe_kosten = str_replace("-", ".", $kosten);
-        DB::insert("INSERT INTO planning (kenteken, werkzaamheden, datum, tijd, kosten, status, kilometerstand) values ('$kenteken', '$werkzaamheden', '$datum', '$tijd', '$nieuwe_kosten', '$status', '$kilometerstand')");
+        DB::insert("INSERT INTO planning (kenteken, werkzaamheden, datum, tijd, status, kilometerstand) values ('$kenteken', '$werkzaamheden', '$datum', '$tijd', '$status', '$kilometerstand')");
+        return redirect("/kentekensearch/kenteken=$kenteken");
+    }
+
+    public function insertAuto($kenteken, $merk, $type, $meldcode)
+    {
+        DB::insert("INSERT INTO autos (kenteken, merk, type, meldcode) values ('$kenteken', '$merk', '$type', '$meldcode')");
+        return redirect("/kentekensearch/kenteken=$kenteken");
+    }
+
+    public function insertSubwerkorder($kenteken, $planning_id, $omschrijving, $aantal, $kostenPerStuk, $kostenTotaal)
+    {
+        DB::insert("INSERT INTO werkorders (planning_id, omschrijving, aantal, kosten_per_stuk, kosten_totaal) values ('$planning_id', '$omschrijving', '$aantal', '$kostenPerStuk', '$kostenTotaal')");
         return redirect("/kentekensearch/kenteken=$kenteken");
     }
 
