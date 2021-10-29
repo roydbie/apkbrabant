@@ -56,79 +56,76 @@
                     </thead>
                     <tbody>
                     @foreach ($werkorders as $werkorder)
-                        <tr style="background-color:#ededed;">
-                            <th scope="row">{{$werkorder->id}}</th>
-                            <td>{{$werkorder->werkzaamheden}}</td>
-                            <td>{{date("d-m-Y", strtotime($werkorder->datum))}}</td>
-                            <td>{{substr($werkorder->tijd, 0, -3)}}</td>
-                            <td>{{$werkorder->kilometerstand}}</td>
-                            <td>{{$werkorder->status}}</td>
-                            <td>
-                                @if ($werkorder->status == 'gerepareerd')
-                                    <button class="btn btn-warning btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'opgehaald')">Opgehaald</button>
-                                @elseif ($werkorder->status == 'in afwachting')
-                                    <button class="btn btn-warning btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'gerepareerd')">Gerepareerd</button>
-                                @elseif ($werkorder->status == 'opgehaald')
-                                    <button class="btn btn-danger btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'in afwachting')">Reset status</button>
-                                @endif
-                            </td>
-                        </tr>
+                        @if($werkorder->werkzaamheden == 'Reparatie' || $werkorder->werkzaamheden == 'Grote beurt' || $werkorder->werkzaamheden == 'Kleine beurt')
+                            <tr style="background-color:#ededed;">
+                                <th scope="row">{{$werkorder->id}}</th>
+                                <td>{{$werkorder->werkzaamheden}}</td>
+                                <td>{{date("d-m-Y", strtotime($werkorder->datum))}}</td>
+                                <td>{{substr($werkorder->tijd, 0, -3)}}</td>
+                                <td>{{$werkorder->kilometerstand}}</td>
+                                <td>{{$werkorder->status}}</td>
+                                <td>
+                                    @if ($werkorder->status == 'gerepareerd')
+                                        <button class="btn btn-warning btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'opgehaald')">Opgehaald</button>
+                                    @elseif ($werkorder->status == 'in afwachting')
+                                        <button class="btn btn-warning btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'gerepareerd')">Gerepareerd</button>
+                                    @elseif ($werkorder->status == 'opgehaald')
+                                        <button class="btn btn-danger btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'in afwachting')">Reset status</button>
+                                    @endif
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Omschrijving</th>
-                            <th scope="col">Aantal:</th>
-                            <th scope="col">Kosten per stuk:</th>
-                            <th scope="col">Kosten totaal:</th>
-                        </tr>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Omschrijving</th>
+                                <th scope="col">Aantal:</th>
+                                <th scope="col">Kosten per stuk:</th>
+                                <th scope="col">Kosten totaal:</th>
+                            </tr>
 
-                        @php
-                        $id = $werkorder->id;
-                        $results = DB::select("SELECT * FROM werkorders WHERE planning_id = $id");
-                        foreach ($results as $result){
-                            echo "<tr style=\"border-color: white;\"><td></td>";
-                            echo "<td>$result->omschrijving</td>";
-                            echo "<td>$result->aantal</td>";
-                            echo "<td>&euro;$result->kosten_per_stuk</td>";
-                            echo "<td>&euro;$result->kosten_totaal</td>";
-                            echo "</tr>";
-                        }
-                        if($werkorder->status == 'in afwachting') {
-                            echo "<tr id=\"productToevoegenTR\">
-                            <td></td>
-                            <td>
-                                <input type=\"text\" class=\"form-control\" id=\"inputOmschrijving\" style=\"width:250px;font-size:0.8rem;\">
-                            </td>
-                            <td>
-                                <select class=\"form-control\" id=\"inputAantal\" style=\"width:50px;font-size:0.8rem;\">
-                                    <option value=\"1\" selected>1</option>
-                                    <option value=\"1.5\">1.5</option>
-                                    <option value=\"2\">2</option>
-                                    <option value=\"2.5\">2.5</option>
-                                    <option value=\"3\">3</option>
-                                    <option value=\"3.5\">3.5</option>
-                                    <option value=\"4\">4</option>
-                                    <option value=\"4.5\">4.5</option>
-                                    <option value=\"5\">5</option>
-                                    <option value=\"5.5\">5.5</option>
-                                    <option value=\"6\">6</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type=\"text\" class=\"form-control\" id=\"inputKostenPerStuk\" style=\"width:75px;font-size:0.8rem;\">
-                            </td>
-                            <td>
-                                <input type=\"text\" class=\"form-control\" id=\"inputKostenTotaal\" style=\"width:75px;font-size:0.8rem;\">
-                            </td>
-                            <td><button type=\"button\" class=\"btn btn-success btn\" id=\"\" onclick=\"productToevoegen($werkorder->id, '$werkorder->kenteken');\">Product toevoegen</button></td>
-                        </tr>";
-                        }
-                        @endphp
-                        @if($werkorder->status == 'in afwachting')
-
-
+                            @php
+                            $id = $werkorder->id;
+                            $results = DB::select("SELECT * FROM werkorders WHERE planning_id = $id");
+                            foreach ($results as $result){
+                                echo "<tr style=\"border-color: white;\"><td></td>";
+                                echo "<td>$result->omschrijving</td>";
+                                echo "<td>$result->aantal</td>";
+                                echo "<td>&euro;$result->kosten_per_stuk</td>";
+                                echo "<td>&euro;$result->kosten_totaal</td>";
+                                echo "</tr>";
+                            }
+                            if($werkorder->status == 'in afwachting') {
+                                echo "<tr id=\"productToevoegenTR\">
+                                <td></td>
+                                <td>
+                                    <input type=\"text\" class=\"form-control\" id=\"inputOmschrijving\" style=\"width:250px;font-size:0.8rem;\">
+                                </td>
+                                <td>
+                                    <select class=\"form-control\" id=\"inputAantal\" style=\"width:50px;font-size:0.8rem;\">
+                                        <option value=\"1\" selected>1</option>
+                                        <option value=\"1.5\">1.5</option>
+                                        <option value=\"2\">2</option>
+                                        <option value=\"2.5\">2.5</option>
+                                        <option value=\"3\">3</option>
+                                        <option value=\"3.5\">3.5</option>
+                                        <option value=\"4\">4</option>
+                                        <option value=\"4.5\">4.5</option>
+                                        <option value=\"5\">5</option>
+                                        <option value=\"5.5\">5.5</option>
+                                        <option value=\"6\">6</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type=\"text\" class=\"form-control\" id=\"inputKostenPerStuk\" style=\"width:75px;font-size:0.8rem;\">
+                                </td>
+                                <td>
+                                    <input type=\"text\" class=\"form-control\" id=\"inputKostenTotaal\" style=\"width:75px;font-size:0.8rem;\">
+                                </td>
+                                <td><button type=\"button\" class=\"btn btn-success btn\" id=\"\" onclick=\"productToevoegen($werkorder->id, '$werkorder->kenteken');\">Product toevoegen</button></td>
+                            </tr>";
+                            }
+                            @endphp
                         @endif
-
                     @endforeach
                     </tbody>
                 </table>
