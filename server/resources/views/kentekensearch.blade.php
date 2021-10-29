@@ -34,6 +34,9 @@
         <div id="containment-wrapper">
             <div class="mt-2">
                 <button class="btn btn-success" onclick="location.href='/nieuw_werkorder?kenteken={{$kenteken}}';">Werkorder aanmaken</button>
+                @if (!$autoinfo)
+                    <button class="btn btn-warning" onclick="location.href='/nieuw_auto?kenteken={{$kenteken}}';">Auto informatie aanmaken</button>
+                @endif
             </div>
             <h1 style="margin-top:20px;">{{strtoupper($kenteken)}}</h1>
             @if ($autoinfo)
