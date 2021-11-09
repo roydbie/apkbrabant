@@ -3,322 +3,130 @@
 @section('content')
 
 <style>
-    .head {
-        font-weight:bold;
-        padding-top:10px;
-        padding-bottom:10px;
-    }
-
-    .agenda {
-        width:100%;
-        margin:auto;
-    }
-
-    .agenda > .row > .col {
-        min-height:40px!important;
-        border: 1px solid #e0e0e0;
-        margin: 10px 20px;
-        border-radius: 5px;
-    }
-
-    .agenda > .col > .btn {
-        width: 80%!important;
-    }
-
     #containment-wrapper {
-        width: 93.5%;
-        margin-left:50px;
-        height:600px;
-        margin-bottom:50px;
+        width: 95%;
+        margin-left:2.5%;
+        height:34vw;
         padding: 10px;
         text-align: center;
         background-color:white;
         border-radius: 10px;
         box-shadow: 0px 5px 10px #dedede;
     }
+
+    .agenda-header {
+        width:100%;
+        display:inline-block;
+        margin-bottom:20px;
+    }
+
+    .agenda-afspraak {
+        width:50%;
+        height:50px;
+        background-color: #ededed;
+        margin: 10px auto;
+        padding: 15px 10px 10px;
+        border-radius: 5px;
+    }
+
+    .agenda-afspraak-tijd{
+        display: inline-block;
+        text-align: left;
+        font-weight: bold;
+        margin-left: 40px;
+    }
+
+    .agenda-afspraak-kenteken{
+        display: inline-block;
+    }
+
+    .agenda-afspraak-werkzaamheden{
+        display: inline-block;
+        text-align:right;
+        margin-right: 40px;
+    }
 </style>
 
+<?php
+    use Illuminate\Support\Facades\DB;
+
+    $vandaag = new DateTime(date("Y-m-d"));
+    $geselecteerde_datum = isset($_GET["datum"]) ? new DateTime($_GET["datum"]) : new DateTime(date("Y-m-d"));
+
+?>
+
+
+
 <div id="containment-wrapper">
-    <div class="agenda" style="max-height:100%!important;overflow-y:scroll;overflow-x:hidden;">
-        <div class="row">
-            <div class="col">
+    <div class="pt-3 mx-5">
+        <div class="agenda-header">
+            <div class="row" style="width:50%;margin:auto;">
+                <h2 class="mb-3" style="display:inline-block;margin-bottom:0;font-weight:400;">
+                    <?php
+                    if ($geselecteerde_datum->format('Y-m-d') == date("Y-m-d")){
+                        echo "Vandaag";
+                    } elseif ($geselecteerde_datum->format('Y-m-d') == date('Y-m-d', strtotime("-1 day",  strtotime(date('Y-m-d'))))) {
+                        echo "Gisteren";
+                    } elseif ($geselecteerde_datum->format('Y-m-d') == date('Y-m-d', strtotime("+1 day",  strtotime(date('Y-m-d'))))) {
+                        echo "Morgen";
+                    } else {
+                        echo $geselecteerde_datum->format('d-m-Y');
+                    }
 
-            </div>
-            <div class="col head">
-                Maandag <br> 27 September
-            </div>
-            <div class="col head">
-                Dinsdag <br> 28 September
-            </div>
-            <div class="col head">
-                Woensdag <br> 29 September
-            </div>
-            <div class="col head">
-                Donderdag <br> 30 September
-            </div>
-            <div class="col head">
-                Vrijdag <br> 1 oktober
-            </div>
-            <div class="col head">
-                Zaterdag <br> 2 oktober
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                08:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-                <button class="btn btn-secondary btn-sm mt-2" style="width:80%!important;margin-left:10%;">ZJ-RB-32<br>08:30</button>
-                <button class="btn btn-success btn-sm my-2" style="width:80%!important;margin-left:10%;">26-XL-JH<br>08:45</button>
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
+                    ?>
+                </h2>
+                <div class="col">
+                    <button type="button" id="<?= date('Y-m-d', strtotime("-1 day", strtotime($geselecteerde_datum->format('Y-m-d'))))?>" class="btn btn-success btn-sm" onclick="DatumChange(this.id);"
+                            style="display:inline-block;border-radius:50%;">
+                        <b>&nbsp;<&nbsp;</b>
+                    </button>
+                    <button type="button" id="<?= date('Y-m-d', strtotime("+1 day", strtotime($geselecteerde_datum->format('Y-m-d'))))?>" class="btn btn-success btn-sm" onclick="DatumChange(this.id);"
+                            style="display:inline-block;border-radius:50%;">
+                        <b>&nbsp;>&nbsp;</b>
+                    </button>
+                    <?php
+                    if ($vandaag != $geselecteerde_datum){
+                        echo "<button type=\"button\" class=\"btn btn-success btn\" onclick=\"DatumChange('vandaag');\"
+                            style=\"display:inline-block;margin-left:10px;font-size:0.8rem;\">
+                            Naar vandaag
+                            </button>";
+                    }
+                    ?>
+                </div>
+                <div class="col">
+                    <input type="date" id="birthday" name="birthday" class="form-control" style="font-size:0.8rem;width:50%;margin:auto;text-align: center;"
+                           value="<?= $geselecteerde_datum->format('Y-m-d'); ?>" onchange="DatumChange(this.value);">
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col head">
-                09:00
-            </div>
-            <div class="col">
+        <?php
+        $datum = $geselecteerde_datum->format("Y-m-d");
+        $results = DB::select("SELECT * FROM planning WHERE datum = '$datum'");
+        foreach ($results as $result){
+            echo "<div class=\"agenda-afspraak row\"><p class=\"agenda-afspraak-tijd col\">";
+            echo substr($result->tijd, 0, -3);
+            echo "</p><p class=\"agenda-afspraak-kenteken col\">";
+            echo $result->kenteken;
+            echo "</p><p class=\"agenda-afspraak-werkzaamheden col\">";
+            echo $result->werkzaamheden;
+            echo "</p></div>";
+        }
+        ?>
 
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                10:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                11:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                12:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                13:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                14:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                15:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                16:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                17:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col head">
-                18:00
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-
-            </div>
-        </div>
     </div>
 </div>
+
+    <script>
+        function DatumChange(geselecteerdeDatum) {
+            if (geselecteerdeDatum === "vandaag"){
+                var today = new Date();
+                var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                location.href = `/agenda?datum=${date}`;
+            } else {
+                location.href = `/agenda?datum=${geselecteerdeDatum}`;
+            }
+
+        }
+    </script>
 
 @stop

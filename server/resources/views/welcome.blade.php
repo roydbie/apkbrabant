@@ -26,10 +26,9 @@ for ($i = 0; $i < count($arrayPending); $i++) {
 
 <style>
     #containment-wrapper {
-        width: 93.5%;
-        margin-left:50px;
-        height:600px;
-        margin-bottom:50px;
+        width: 95%;
+        margin-left:2.5%;
+        height:34vw;
         padding: 10px;
         text-align: center;
         background-color:white;
@@ -54,8 +53,6 @@ for ($i = 0; $i < count($arrayPending); $i++) {
         color: yellow!important;
     }
 </style>
-
-<!-- lallaalal-->
 
 <div id="containment-wrapper">
     <?php
