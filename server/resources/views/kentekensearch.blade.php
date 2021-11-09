@@ -50,8 +50,9 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Werkzaamheden</th>
-                            <th scope="col">Datum</th>
-                            <th scope="col">Tijd</th>
+                            <th scope="col">Omschrijving</th>
+                            <th scope="col">Melddatum</th>
+                            <th scope="col">Meldtijd</th>
                             <th scope="col">Bij km. stand</th>
                             <th scope="col">Status</th>
                             <th scope="col">Verander status naar:</th>
@@ -63,8 +64,9 @@
                             <tr style="background-color:#ededed;">
                                 <th scope="row">{{$werkorder->id}}</th>
                                 <td>{{$werkorder->werkzaamheden}}</td>
-                                <td>{{date("d-m-Y", strtotime($werkorder->datum))}}</td>
-                                <td>{{substr($werkorder->tijd, 0, -3)}}</td>
+                                <td>{{$werkorder->omschrijving}}</td>
+                                <td>{{date("d-m-Y", strtotime($werkorder->melddatum))}}</td>
+                                <td>{{substr($werkorder->meldtijd, 0, -3)}}</td>
                                 <td>{{$werkorder->kilometerstand}}</td>
                                 <td>{{$werkorder->status}}</td>
                                 <td>

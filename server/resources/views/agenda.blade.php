@@ -31,7 +31,6 @@
 
     .agenda-afspraak-tijd{
         display: inline-block;
-        text-align: left;
         font-weight: bold;
         margin-left: 40px;
     }
@@ -42,7 +41,10 @@
 
     .agenda-afspraak-werkzaamheden{
         display: inline-block;
-        text-align:right;
+    }
+
+    .agenda-afspraak-acties{
+        display: inline-block;
         margin-right: 40px;
     }
 </style>
@@ -99,20 +101,26 @@
                 </div>
             </div>
         </div>
+        <div class="agenda-afspraak row">
+            <p class="agenda-afspraak-tijd col">Meldtijd</p>
+            <p class="agenda-afspraak-kenteken col"><b>Kenteken</b></p>
+            <p class="agenda-afspraak-werkzaamheden col"><b>Werkzaamheden</b></p>
+            <p class="agenda-afspraak-acties col"><b>Acties</b></p>
+        </div>
         <?php
         $datum = $geselecteerde_datum->format("Y-m-d");
-        $results = DB::select("SELECT * FROM planning WHERE datum = '$datum'");
+        $results = DB::select("SELECT * FROM planning WHERE melddatum = '$datum'");
         foreach ($results as $result){
             echo "<div class=\"agenda-afspraak row\"><p class=\"agenda-afspraak-tijd col\">";
-            echo substr($result->tijd, 0, -3);
+            echo substr($result->meldtijd, 0, -3);
             echo "</p><p class=\"agenda-afspraak-kenteken col\">";
             echo $result->kenteken;
             echo "</p><p class=\"agenda-afspraak-werkzaamheden col\">";
             echo $result->werkzaamheden;
-            echo "</p></div>";
+            echo "</p>";
+            echo "<p class=\"agenda-afspraak-acties col\"><button type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-top:-5px;\" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">Bekijk</button></p></div>";
         }
         ?>
-
     </div>
 </div>
 
@@ -121,9 +129,9 @@
             if (geselecteerdeDatum === "vandaag"){
                 var today = new Date();
                 var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                location.href = `/agenda?datum=${date}`;
+                location.href = `/agenda?melddatum=${date}`;
             } else {
-                location.href = `/agenda?datum=${geselecteerdeDatum}`;
+                location.href = `/agenda?melddatum=${geselecteerdeDatum}`;
             }
 
         }
