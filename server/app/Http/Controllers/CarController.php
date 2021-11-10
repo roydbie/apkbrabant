@@ -28,9 +28,9 @@ class CarController extends Controller
         return view('car', ['id' => $id]);
     }
 
-    public function insert($kenteken, $werkzaamheden, $omschrijving, $melddatum, $meldtijd, $status, $kilometerstand)
+    public function insert($kenteken, $werkzaamheden, $omschrijving, $melddatum, $meldtijd, $ophaaldatum, $ophaaltijd, $status, $kilometerstand)
     {
-        DB::insert("INSERT INTO planning (kenteken, werkzaamheden, omschrijving, melddatum, meldtijd, status, kilometerstand) values ('$kenteken', '$werkzaamheden', '$omschrijving', '$melddatum', '$meldtijd', '$status', '$kilometerstand')");
+        DB::insert("INSERT INTO planning (kenteken, werkzaamheden, omschrijving, melddatum, meldtijd, ophaaldatum, ophaaltijd, status, kilometerstand) values ('$kenteken', '$werkzaamheden', '$omschrijving', '$melddatum', '$meldtijd', '$ophaaldatum', '$ophaaltijd', '$status', '$kilometerstand')");
         return redirect("/kentekensearch/kenteken=$kenteken");
     }
 

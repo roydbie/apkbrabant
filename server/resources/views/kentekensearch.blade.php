@@ -18,8 +18,8 @@
             }
 
             .tablecss {
-                width:70%;
-                margin-left:15%;
+                width:90%;
+                margin-left:5%;
                 font-size:0.8rem;
                 text-align:left!important;
                 margin-bottom: 50px!important;
@@ -53,34 +53,43 @@
                             <th scope="col">Omschrijving</th>
                             <th scope="col">Melddatum</th>
                             <th scope="col">Meldtijd</th>
+                            <th scope="col">Ophaaldatum</th>
+                            <th scope="col">Ophaaltijd</th>
                             <th scope="col">Bij km. stand</th>
                             <th scope="col">Status</th>
                             <th scope="col">Verander status naar:</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach ($werkorders as $werkorder)
                         @if($werkorder->werkzaamheden == 'Reparatie' || $werkorder->werkzaamheden == 'Grote beurt' || $werkorder->werkzaamheden == 'Kleine beurt')
-                            <tr style="background-color:#ededed;">
+                            <tr style=" background-color:#ededed;">
                                 <th scope="row">{{$werkorder->id}}</th>
                                 <td>{{$werkorder->werkzaamheden}}</td>
                                 <td>{{$werkorder->omschrijving}}</td>
                                 <td>{{date("d-m-Y", strtotime($werkorder->melddatum))}}</td>
                                 <td>{{substr($werkorder->meldtijd, 0, -3)}}</td>
+                                <td>{{date("d-m-Y", strtotime($werkorder->ophaaldatum))}}</td>
+                                <td>{{substr($werkorder->ophaaltijd, 0, -3)}}</td>
                                 <td>{{$werkorder->kilometerstand}}</td>
                                 <td>{{$werkorder->status}}</td>
                                 <td>
                                     @if ($werkorder->status == 'gerepareerd')
-                                        <button class="btn btn-warning btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'opgehaald')">Opgehaald</button>
+                                        <button class="btn btn-warning btn btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'opgehaald')">Opgehaald</button>
                                     @elseif ($werkorder->status == 'in afwachting')
-                                        <button class="btn btn-warning btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'gerepareerd')">Gerepareerd</button>
+                                        <button class="btn btn-warning btn btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'gerepareerd')">Gerepareerd</button>
                                     @elseif ($werkorder->status == 'opgehaald')
-                                        <button class="btn btn-danger btn" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'in afwachting')">Reset status</button>
+                                        <button class="btn btn-danger btn btn-sm" onclick="wijzigStatus('{{$werkorder->kenteken}}', {{$werkorder->id}}, 'in afwachting')">Reset status</button>
                                     @endif
+                                </td>
+                                <td>
+                                    <button id="detailsButton{{$werkorder->id}}" class="btn btn-primary btn-sm" onclick="showDetails({{$werkorder->id}});">Bekijk details</button>
+                                    <button class="btn btn-danger btn-sm" onclick="verwijderWerkorder('{{$werkorder->kenteken}}', {{$werkorder->id}});">x</button>
                                 </td>
                             </tr>
 
-                            <tr>
+                            <tr class="<?= "details" . $werkorder->id ?>" style="display: none;">
                                 <th scope="col"></th>
                                 <th scope="col">Omschrijving</th>
                                 <th scope="col">Aantal:</th>
@@ -92,7 +101,7 @@
                             $id = $werkorder->id;
                             $results = DB::select("SELECT * FROM werkorders WHERE planning_id = $id");
                             foreach ($results as $result){
-                                echo "<tr style=\"border-color: white;\"><td></td>";
+                                echo "<tr style=\"border-color: white;display:none;\" class=\"details$werkorder->id\"><td></td>";
                                 echo "<td>$result->omschrijving</td>";
                                 echo "<td>$result->aantal</td>";
                                 echo "<td>&euro;$result->kosten_per_stuk</td>";
@@ -100,7 +109,7 @@
                                 echo "</tr>";
                             }
                             if($werkorder->status == 'in afwachting') {
-                                echo "<tr id=\"productToevoegenTR\">
+                                echo "<tr id=\"productToevoegenTR\" class=\"details$werkorder->id\" style=\"display:none;\">
                                 <td></td>
                                 <td>
                                     <input type=\"text\" class=\"form-control\" id=\"inputOmschrijving\" style=\"width:250px;font-size:0.8rem;\">
@@ -178,6 +187,29 @@
                 const kostenPerStuk = document.getElementById('inputKostenPerStuk').value;
                 const kostenTotaal = document.getElementById('inputKostenTotaal').value;
                 location.href = `/nieuw_subwerkorder/kenteken=${kenteken}/planning_id=${planning_id}/omschrijving=${omschrijving}/aantal=${aantal}/kostenPerStuk=${kostenPerStuk}/kostenTotaal=${kostenTotaal}`;
+            }
+
+            function showDetails(id) {
+                const buttonTekst = document.getElementById(`detailsButton${id}`).innerHTML;
+                const cols = document.getElementsByClassName(`details${id}`);
+                if (buttonTekst == "Verberg details"){
+                    for(let i = 0; i < cols.length; i++) {
+                        cols[i].style.display = 'none';
+                        document.getElementById(`detailsButton${id}`).innerHTML = "Bekijk details";
+                    }
+                } else {
+                    for(let i = 0; i < cols.length; i++) {
+                        cols[i].style.display = 'table-row';
+                        document.getElementById(`detailsButton${id}`).innerHTML = "Verberg details";
+                    }
+                }
+
+            }
+            function hideDetails(id) {
+                const cols = document.getElementsByClassName(`details${id}`);
+                for(let i = 0; i < cols.length; i++) {
+                    cols[i].style.display = 'none';
+                }
             }
         </script>
 

@@ -69,13 +69,25 @@
                     <tr>
                         <td width="200">Melddatum</td>
                         <td>
-                            <input type="date" value="<?php echo $today; ?>" class="form-control" id="inputMelddatum" name="datum" style="width:160px;">
+                            <input type="date" value="<?php echo $today; ?>" class="form-control" id="inputMelddatum" name="melddatum" style="width:160px;">
                         </td>
                     </tr>
                     <tr>
                         <td width="200">Meldtijd</td>
                         <td>
-                            <input type="time" value="<?php echo $currenttime; ?>"class="form-control" id="inputMeldtijd" name="tijd" style="width:160px;">
+                            <input type="time" step="1800" value="<?php echo $currenttime; ?>"class="form-control" id="inputMeldtijd" name="meldtijd" style="width:160px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="200">Ophaaldatum</td>
+                        <td>
+                            <input type="date" value="<?php echo $today; ?>" class="form-control" id="inputOphaaldatum" name="ophaaldatum" style="width:160px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="200">Ophaaltijd</td>
+                        <td>
+                            <input type="time" value="17:00:00"class="form-control" id="inputOphaaltijd" name="ophaaltijd" style="width:160px;">
                         </td>
                     </tr>
                     <tr>
@@ -115,17 +127,23 @@
                     echo "var kenteken ='$kenteken';";
                     ?>
                     var werkzaamheden = document.getElementById('inputWerkzaamheden').value;
-                    var omschrijving = document.getElementById('inputOmschrijving').value;
                     var melddatum = document.getElementById('inputMelddatum').value;
                     var meldtijd = document.getElementById('inputMeldtijd').value;
+                    var ophaaldatum = document.getElementById('inputOphaaldatum').value;
+                    var ophaaltijd = document.getElementById('inputOphaaltijd').value;
                     var status = document.getElementById('inputStatus').value;
                     if(document.getElementById('inputKilometerstand').value == '') {
                         var kilometerstand = '000000';
                     } else {
                         var kilometerstand = document.getElementById('inputKilometerstand').value;
                     }
+                    if(document.getElementById('inputOmschrijving').value == '') {
+                        var omschrijving = werkzaamheden;
+                    } else {
+                        var omschrijving = document.getElementById('inputOmschrijving').value;
+                    }
 
-                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/omschrijving=${omschrijving}/melddatum=${melddatum}/meldtijd=${meldtijd}/status=${status}/kilometerstand=${kilometerstand}`;
+                    location.href = `/nieuw_werkorder/kenteken=${kenteken}/werkzaamheden=${werkzaamheden}/omschrijving=${omschrijving}/melddatum=${melddatum}/meldtijd=${meldtijd}/ophaaldatum=${ophaaldatum}/ophaaltijd=${ophaaltijd}/status=${status}/kilometerstand=${kilometerstand}`;
                 }
             </script>
 

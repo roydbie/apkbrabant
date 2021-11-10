@@ -46,6 +46,7 @@
     .agenda-afspraak-acties{
         display: inline-block;
         margin-right: 40px;
+
     }
 </style>
 
@@ -53,7 +54,7 @@
     use Illuminate\Support\Facades\DB;
 
     $vandaag = new DateTime(date("Y-m-d"));
-    $geselecteerde_datum = isset($_GET["datum"]) ? new DateTime($_GET["datum"]) : new DateTime(date("Y-m-d"));
+    $geselecteerde_datum = isset($_GET["melddatum"]) ? new DateTime($_GET["melddatum"]) : new DateTime(date("Y-m-d"));
 
 ?>
 
@@ -118,7 +119,7 @@
             echo "</p><p class=\"agenda-afspraak-werkzaamheden col\">";
             echo $result->werkzaamheden;
             echo "</p>";
-            echo "<p class=\"agenda-afspraak-acties col\"><button type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-top:-5px;\" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">Bekijk</button></p></div>";
+            echo "<p class=\"agenda-afspraak-acties col\"><button type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-top:-5px;font-size: 0.8rem;\" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">Bekijk</button></p></div>";
         }
         ?>
     </div>
