@@ -26,13 +26,6 @@
 
 
 <div id="containment-wrapper" class="pt-5">
-    <div class="row mx-3">
-        <div class="col" style="text-align: right">
-            Sorteer op:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" class="btn btn-success btn-sm">Ophaaldatum</button>
-            <button type="button" class="btn btn-outline-success btn-sm">Melddatum</button>
-        </div>
-    </div>
     <?php
     $weeknummer = isset($_GET["weeknummer"]) ? $_GET["weeknummer"] : date("W");
     $week_array = getStartAndEndDate($weeknummer,date('Y'));
@@ -40,22 +33,44 @@
     ?>
     <div class="row mx-3 my-3">
         <?php
+        $a = $_GET["gebruikdatum"];
         for ($x = 0; $x <= 52; $x+=1) {
             if ($x == $weeknummer){
                 if ($x == 52){
-                    echo "<div id=\"week$x\" class=\"col bg-success text-white py-2\" style=\"margin:0;padding:0;cursor:pointer;background-color: #70b580;\" onclick=\"changeWeek($x);\">$x</div>";
+                    echo "<div id=\"week$x\" class=\"col bg-success text-white py-2\" style=\"margin:0;padding:0;cursor:pointer;background-color: #70b580;\" onclick=\"changeWeek('$x', '$a');\">$x</div>";
                 } else {
-                    echo "<div id=\"week$x\" class=\"col bg-success text-white py-2\" style=\"border-right: 1px solid black;margin:0;padding:0;cursor:pointer;background-color: #70b580;\" onclick=\"changeWeek($x);\">$x</div>";
+                    echo "<div id=\"week$x\" class=\"col bg-success text-white py-2\" style=\"border: 2px solid white;margin:0;padding:0;cursor:pointer;background-color: #70b580;\" onclick=\"changeWeek('$x', '$a');\"><span></span></div>";
                 }
             } else {
                 if ($x == 52){
-                    echo "<div id=\"week$x\" class=\"col py-2\" style=\"margin:0;padding:0;cursor:pointer;background-color: #afccb9;\" onclick=\"changeWeek($x);\">$x</div>";
+                    echo "<div id=\"week$x\" class=\"col py-2\" style=\"border: 2px solid white;margin:0;padding:0;cursor:pointer;background-color: #afccb9;\" onclick=\"changeWeek('$x', '$a');\">$x</div>";
                 } else {
-                    echo "<div id=\"week$x\" class=\"col py-2\" style=\"border-right: 1px solid black;margin:0;padding:0;cursor:pointer;background-color: #afccb9;\" onclick=\"changeWeek($x);\">$x</div>";
+                    echo "<div id=\"week$x\" class=\"col py-2\" style=\"border: 2px solid white;margin:0;padding:0;cursor:pointer;background-color: #afccb9;\" onclick=\"changeWeek('$x', '$a');\">$x</div>";
                 }
             }
         }
         ?>
+    </div>
+
+    <div class="row mx-3 mt-4 mb-3">
+        <div class="col" style="text-align: left">
+
+        </div>
+        <div class="col" style="text-align: center">
+            <h3>Week <?= $_GET["weeknummer"]?></h3>
+        </div>
+        <div class="col" style="text-align: right">
+            Sorteer op:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <?php
+            if ($_GET["gebruikdatum"] == "ophaaldatum"){
+                echo "<button id=\"ophaaldatumbutton\" type=\"button\" class=\"btn btn-success btn-sm mx-1\" onclick=\"changeGebruikdatum(" . date('W') . ", 'ophaaldatum')\">Ophaaldatum</button>";
+                echo "<button id=\"melddatumbutton\" type=\"button\" class=\"btn btn-outline-success btn-sm mx-1\" onclick=\"changeGebruikdatum(" . date('W') . ", 'melddatum')\">Melddatum</button>";
+            } else {
+                echo "<button id=\"ophaaldatumbutton\" type=\"button\" class=\"btn btn-outline-success btn-sm mx-1\" onclick=\"changeGebruikdatum(" . date('W') . ", 'ophaaldatum')\">Ophaaldatum</button>";
+                echo "<button id=\"melddatumbutton\" type=\"button\" class=\"btn btn-success btn-sm mx-1\" onclick=\"changeGebruikdatum(" . date('W') . ", 'melddatum')\">Melddatum</button>";
+            }
+            ?>
+        </div>
     </div>
 
     <div class="row mx-3 agenda">
@@ -67,13 +82,16 @@
             </div>
             <?php
             $datum = date('Y-m-d', strtotime($datumbegin->format('Y-m-d')));
-            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $gebruikdatum = $_GET["gebruikdatum"];
+            $results = DB::select("SELECT * FROM planning WHERE '$gebruikdatum' = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
-                echo substr($result->ophaaltijd, 0, -3);
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->omschrijving;
                 echo "<br>";
                 echo $result->kenteken;
                 echo "</div>";
@@ -94,13 +112,16 @@
             </div>
             <?php
             $datum = date('Y-m-d', strtotime("+1 day", strtotime($datumbegin->format('Y-m-d'))));
-            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $gebruikdatum = $_GET["gebruikdatum"];
+            $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
-                echo substr($result->ophaaltijd, 0, -3);
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->omschrijving;
                 echo "<br>";
                 echo $result->kenteken;
                 echo "</div>";
@@ -121,13 +142,16 @@
             </div>
             <?php
             $datum = date('Y-m-d', strtotime("+2 day", strtotime($datumbegin->format('Y-m-d'))));
-            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $gebruikdatum = $_GET["gebruikdatum"];
+            $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
-                echo substr($result->ophaaltijd, 0, -3);
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->omschrijving;
                 echo "<br>";
                 echo $result->kenteken;
                 echo "</div>";
@@ -148,13 +172,16 @@
             </div>
             <?php
             $datum = date('Y-m-d', strtotime("+3 day", strtotime($datumbegin->format('Y-m-d'))));
-            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $gebruikdatum = $_GET["gebruikdatum"];
+            $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
-                echo substr($result->ophaaltijd, 0, -3);
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->omschrijving;
                 echo "<br>";
                 echo $result->kenteken;
                 echo "</div>";
@@ -175,13 +202,16 @@
             </div>
             <?php
             $datum = date('Y-m-d', strtotime("+4 day", strtotime($datumbegin->format('Y-m-d'))));
-            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $gebruikdatum = $_GET["gebruikdatum"];
+            $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
-                echo substr($result->ophaaltijd, 0, -3);
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->omschrijving;
                 echo "<br>";
                 echo $result->kenteken;
                 echo "</div>";
@@ -202,13 +232,16 @@
             </div>
             <?php
             $datum = date('Y-m-d', strtotime("+5 day", strtotime($datumbegin->format('Y-m-d'))));
-            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $gebruikdatum = $_GET["gebruikdatum"];
+            $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
-                echo substr($result->ophaaltijd, 0, -3);
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->omschrijving;
                 echo "<br>";
                 echo $result->kenteken;
                 echo "</div>";
@@ -229,20 +262,23 @@
             </div>
             <?php
             $datum = date('Y-m-d', strtotime("+6 day", strtotime($datumbegin->format('Y-m-d'))));
-            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $gebruikdatum = $_GET["gebruikdatum"];
+            $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
-                echo substr($result->ophaaltijd, 0, -3);
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->omschrijving;
                 echo "<br>";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col text-white py-3 my-1\" style=\"border-radius: 20px;background-color: #b6c1cc;\">Items: ";
+                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
                 echo $items;
                 echo "</div>";
             }
@@ -275,8 +311,12 @@ function getStartAndEndDate($week, $year) {
 
         }
 
-        function changeWeek(week) {
-            location.href = `/agenda?weeknummer=${week}`;
+        function changeWeek(week, gebruikdatum) {
+            location.href = `/agenda?weeknummer=${week}&gebruikdatum=${gebruikdatum}`;
+        }
+
+        function changeGebruikdatum(week, gebruikdatum) {
+            location.href = `/agenda?weeknummer=${week}&gebruikdatum=${gebruikdatum}`;
         }
     </script>
 
