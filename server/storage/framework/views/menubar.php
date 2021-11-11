@@ -35,7 +35,7 @@
                 </div>
                 Overzicht
             </div>
-            <div class="menu-item" onclick="location.href='/agenda';">
+            <div class="menu-item" onclick="location.href='/agenda?weeknummer=<?=date('W')?>';">
                 <div class="menucircle m-auto">
                     <p class="pt-2" style="font-size: 25px;">&#128198;</p>
                 </div>
