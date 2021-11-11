@@ -13,41 +13,6 @@
         border-radius: 10px;
         box-shadow: 0px 5px 10px #dedede;
     }
-
-    .agenda-header {
-        width:100%;
-        display:inline-block;
-        margin-bottom:20px;
-    }
-
-    .agenda-afspraak {
-        width:50%;
-        height:50px;
-        background-color: #ededed;
-        margin: 10px auto;
-        padding: 15px 10px 10px;
-        border-radius: 5px;
-    }
-
-    .agenda-afspraak-tijd{
-        display: inline-block;
-        font-weight: bold;
-        margin-left: 40px;
-    }
-
-    .agenda-afspraak-kenteken{
-        display: inline-block;
-    }
-
-    .agenda-afspraak-werkzaamheden{
-        display: inline-block;
-    }
-
-    .agenda-afspraak-acties{
-        display: inline-block;
-        margin-right: 40px;
-
-    }
 </style>
 
 <?php
@@ -60,70 +25,243 @@
 
 
 
-<div id="containment-wrapper">
-    <div class="pt-3 mx-5">
-        <div class="agenda-header">
-            <div class="row" style="width:50%;margin:auto;">
-                <h2 class="mb-3" style="display:inline-block;margin-bottom:0;font-weight:400;">
-                    <?php
-                    if ($geselecteerde_datum->format('Y-m-d') == date("Y-m-d")){
-                        echo "Vandaag";
-                    } elseif ($geselecteerde_datum->format('Y-m-d') == date('Y-m-d', strtotime("-1 day",  strtotime(date('Y-m-d'))))) {
-                        echo "Gisteren";
-                    } elseif ($geselecteerde_datum->format('Y-m-d') == date('Y-m-d', strtotime("+1 day",  strtotime(date('Y-m-d'))))) {
-                        echo "Morgen";
-                    } else {
-                        echo $geselecteerde_datum->format('d-m-Y');
-                    }
-
-                    ?>
-                </h2>
-                <div class="col">
-                    <button type="button" id="<?= date('Y-m-d', strtotime("-1 day", strtotime($geselecteerde_datum->format('Y-m-d'))))?>" class="btn btn-success btn-sm" onclick="DatumChange(this.id);"
-                            style="display:inline-block;border-radius:50%;">
-                        <b>&nbsp;<&nbsp;</b>
-                    </button>
-                    <button type="button" id="<?= date('Y-m-d', strtotime("+1 day", strtotime($geselecteerde_datum->format('Y-m-d'))))?>" class="btn btn-success btn-sm" onclick="DatumChange(this.id);"
-                            style="display:inline-block;border-radius:50%;">
-                        <b>&nbsp;>&nbsp;</b>
-                    </button>
-                    <?php
-                    if ($vandaag != $geselecteerde_datum){
-                        echo "<button type=\"button\" class=\"btn btn-success btn\" onclick=\"DatumChange('vandaag');\"
-                            style=\"display:inline-block;margin-left:10px;font-size:0.8rem;\">
-                            Naar vandaag
-                            </button>";
-                    }
-                    ?>
-                </div>
-                <div class="col">
-                    <input type="date" id="birthday" name="birthday" class="form-control" style="font-size:0.8rem;width:50%;margin:auto;text-align: center;"
-                           value="<?= $geselecteerde_datum->format('Y-m-d'); ?>" onchange="DatumChange(this.value);">
-                </div>
-            </div>
+<div id="containment-wrapper" class="pt-5">
+    <div class="row mx-3">
+        <div class="col" style="text-align: right">
+            Sorteer op:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-success btn-sm">Ophaaldatum</button>
+            <button type="button" class="btn btn-outline-success btn-sm">Melddatum</button>
         </div>
-        <div class="agenda-afspraak row">
-            <p class="agenda-afspraak-tijd col">Meldtijd</p>
-            <p class="agenda-afspraak-kenteken col"><b>Kenteken</b></p>
-            <p class="agenda-afspraak-werkzaamheden col"><b>Werkzaamheden</b></p>
-            <p class="agenda-afspraak-acties col"><b>Acties</b></p>
-        </div>
+    </div>
+    <?php
+    $weeknummer = isset($_GET["weeknummer"]) ? $_GET["weeknummer"] : date("W");
+    $week_array = getStartAndEndDate($weeknummer,date('Y'));
+    $datumbegin = new DateTime($week_array["week_start"]);
+    ?>
+    <div class="row mx-3 my-3">
         <?php
-        $datum = $geselecteerde_datum->format("Y-m-d");
-        $results = DB::select("SELECT * FROM planning WHERE melddatum = '$datum'");
-        foreach ($results as $result){
-            echo "<div class=\"agenda-afspraak row\"><p class=\"agenda-afspraak-tijd col\">";
-            echo substr($result->meldtijd, 0, -3);
-            echo "</p><p class=\"agenda-afspraak-kenteken col\">";
-            echo $result->kenteken;
-            echo "</p><p class=\"agenda-afspraak-werkzaamheden col\">";
-            echo $result->werkzaamheden;
-            echo "</p>";
-            echo "<p class=\"agenda-afspraak-acties col\"><button type=\"button\" class=\"btn btn-primary btn-sm\" style=\"margin-top:-5px;font-size: 0.8rem;\" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">Bekijk</button></p></div>";
+        for ($x = 0; $x <= 52; $x+=1) {
+            if ($x == $weeknummer){
+                if ($x == 52){
+                    echo "<div id=\"week$x\" class=\"col bg-success text-white py-2\" style=\"margin:0;padding:0;cursor:pointer;background-color: #70b580;\" onclick=\"changeWeek($x);\">$x</div>";
+                } else {
+                    echo "<div id=\"week$x\" class=\"col bg-success text-white py-2\" style=\"border-right: 1px solid black;margin:0;padding:0;cursor:pointer;background-color: #70b580;\" onclick=\"changeWeek($x);\">$x</div>";
+                }
+            } else {
+                if ($x == 52){
+                    echo "<div id=\"week$x\" class=\"col py-2\" style=\"margin:0;padding:0;cursor:pointer;background-color: #afccb9;\" onclick=\"changeWeek($x);\">$x</div>";
+                } else {
+                    echo "<div id=\"week$x\" class=\"col py-2\" style=\"border-right: 1px solid black;margin:0;padding:0;cursor:pointer;background-color: #afccb9;\" onclick=\"changeWeek($x);\">$x</div>";
+                }
+            }
         }
         ?>
     </div>
+
+    <div class="row mx-3 agenda">
+        <div class="col">
+            <div class="bg-success text-white py-3 my-1">
+                <b><?php echo date('l', strtotime($datumbegin->format('Y-m-d'))); ?></b>
+                <br>
+                <?php echo date('d-m-Y', strtotime($datumbegin->format('Y-m-d'))); ?>
+            </div>
+            <?php
+            $datum = date('Y-m-d', strtotime($datumbegin->format('Y-m-d')));
+            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $items = 0;
+            foreach ($results as $result){
+                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
+                echo substr($result->ophaaltijd, 0, -3);
+                echo "<br>";
+                echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->kenteken;
+                echo "</div>";
+                $items = $items + 1;
+            }
+            if ($items > 0){
+                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo $items;
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <div class="col">
+            <div class="bg-success text-white py-3 my-1">
+                <b><?php echo date('l', strtotime("+1 day", strtotime($datumbegin->format('Y-m-d')))); ?></b>
+                <br>
+                <?php echo date('d-m-Y', strtotime("+1 day", strtotime($datumbegin->format('Y-m-d')))); ?>
+            </div>
+            <?php
+            $datum = date('Y-m-d', strtotime("+1 day", strtotime($datumbegin->format('Y-m-d'))));
+            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $items = 0;
+            foreach ($results as $result){
+                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
+                echo substr($result->ophaaltijd, 0, -3);
+                echo "<br>";
+                echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->kenteken;
+                echo "</div>";
+                $items = $items + 1;
+            }
+            if ($items > 0){
+                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo $items;
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <div class="col">
+            <div class="bg-success text-white py-3 my-1">
+                <b><?php echo date('l', strtotime("+2 day", strtotime($datumbegin->format('Y-m-d')))); ?></b>
+                <br>
+                <?php echo date('d-m-Y', strtotime("+2 day", strtotime($datumbegin->format('Y-m-d')))); ?>
+            </div>
+            <?php
+            $datum = date('Y-m-d', strtotime("+2 day", strtotime($datumbegin->format('Y-m-d'))));
+            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $items = 0;
+            foreach ($results as $result){
+                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
+                echo substr($result->ophaaltijd, 0, -3);
+                echo "<br>";
+                echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->kenteken;
+                echo "</div>";
+                $items = $items + 1;
+            }
+            if ($items > 0){
+                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo $items;
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <div class="col">
+            <div class="bg-success text-white py-3 my-1">
+                <b><?php echo date('l', strtotime("+3 day", strtotime($datumbegin->format('Y-m-d')))); ?></b>
+                <br>
+                <?php echo date('d-m-Y', strtotime("+3 day", strtotime($datumbegin->format('Y-m-d')))); ?>
+            </div>
+            <?php
+            $datum = date('Y-m-d', strtotime("+3 day", strtotime($datumbegin->format('Y-m-d'))));
+            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $items = 0;
+            foreach ($results as $result){
+                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
+                echo substr($result->ophaaltijd, 0, -3);
+                echo "<br>";
+                echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->kenteken;
+                echo "</div>";
+                $items = $items + 1;
+            }
+            if ($items > 0){
+                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo $items;
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <div class="col">
+            <div class="bg-success text-white py-3 my-1">
+                <b><?php echo date('l', strtotime("+4 day", strtotime($datumbegin->format('Y-m-d')))); ?></b>
+                <br>
+                <?php echo date('d-m-Y', strtotime("+4 day", strtotime($datumbegin->format('Y-m-d')))); ?>
+            </div>
+            <?php
+            $datum = date('Y-m-d', strtotime("+4 day", strtotime($datumbegin->format('Y-m-d'))));
+            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $items = 0;
+            foreach ($results as $result){
+                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
+                echo substr($result->ophaaltijd, 0, -3);
+                echo "<br>";
+                echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->kenteken;
+                echo "</div>";
+                $items = $items + 1;
+            }
+            if ($items > 0){
+                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo $items;
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <div class="col">
+            <div class="bg-success text-white py-3 my-1">
+                <b><?php echo date('l', strtotime("+5 day", strtotime($datumbegin->format('Y-m-d')))); ?></b>
+                <br>
+                <?php echo date('d-m-Y', strtotime("+5 day", strtotime($datumbegin->format('Y-m-d')))); ?>
+            </div>
+            <?php
+            $datum = date('Y-m-d', strtotime("+5 day", strtotime($datumbegin->format('Y-m-d'))));
+            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $items = 0;
+            foreach ($results as $result){
+                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
+                echo substr($result->ophaaltijd, 0, -3);
+                echo "<br>";
+                echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->kenteken;
+                echo "</div>";
+                $items = $items + 1;
+            }
+            if ($items > 0){
+                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo $items;
+                echo "</div>";
+            }
+            ?>
+        </div>
+        <div class="col">
+            <div class="bg-success text-white py-3 my-1">
+                <b><?php echo date('l', strtotime("+6 day", strtotime($datumbegin->format('Y-m-d')))); ?></b>
+                <br>
+                <?php echo date('d-m-Y', strtotime("+6 day", strtotime($datumbegin->format('Y-m-d')))); ?>
+            </div>
+            <?php
+            $datum = date('Y-m-d', strtotime("+6 day", strtotime($datumbegin->format('Y-m-d'))));
+            $results = DB::select("SELECT * FROM planning WHERE ophaaldatum = '$datum'");
+            $items = 0;
+            foreach ($results as $result){
+                echo "<div class=\"col py-2 my-1\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px; \">";
+                echo substr($result->ophaaltijd, 0, -3);
+                echo "<br>";
+                echo $result->werkzaamheden;
+                echo "<br>";
+                echo $result->kenteken;
+                echo "</div>";
+                $items = $items + 1;
+            }
+            if ($items > 0){
+                echo "<div class=\"col text-white py-3 my-1\" style=\"border-radius: 20px;background-color: #b6c1cc;\">Items: ";
+                echo $items;
+                echo "</div>";
+            }
+            ?>
+        </div>
+    </div>
+
 </div>
+
+<?php
+function getStartAndEndDate($week, $year) {
+    $dto = new DateTime();
+    $dto->setISODate($year, $week);
+    $ret['week_start'] = $dto->format('Y-m-d');
+    $dto->modify('+6 days');
+    $ret['week_end'] = $dto->format('Y-m-d');
+    return $ret;
+}
+?>
 
     <script>
         function DatumChange(geselecteerdeDatum) {
@@ -135,6 +273,10 @@
                 location.href = `/agenda?melddatum=${geselecteerdeDatum}`;
             }
 
+        }
+
+        function changeWeek(week) {
+            location.href = `/agenda?weeknummer=${week}`;
         }
     </script>
 
