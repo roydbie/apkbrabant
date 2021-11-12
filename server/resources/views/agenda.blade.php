@@ -6,8 +6,9 @@
     #containment-wrapper {
         width: 95%;
         margin-left:2.5%;
-        height:34vw;
+        min-height:34vw;
         padding: 10px;
+        margin-bottom: 50px;
         text-align: center;
         background-color:white;
         border-radius: 10px;
@@ -54,7 +55,18 @@
 
     <div class="row mx-3 mt-4 mb-3">
         <div class="col" style="text-align: left">
-
+            <div style="display: inline-block;margin-right:25px;">
+                <span class="bg-warning text-warning">AA</span>&nbsp;&nbsp;Grote beurt
+            </div>
+            <div style="display: inline-block;margin-right:25px;">
+                <span class="bg-info text-info">AA</span>&nbsp;&nbsp;Kleine beurt
+            </div>
+            <div style="display: inline-block;margin-right:25px;">
+                <span class="bg-success text-success">AA</span>&nbsp;&nbsp;Reparatie
+            </div>
+            <div style="display: inline-block;margin-right:25px;">
+                <span class="bg-primary text-primary">AA</span>&nbsp;&nbsp;APK keuring
+            </div>
         </div>
         <div class="col" style="text-align: center">
             <h3>Week <?= $_GET["weeknummer"]?></h3>
@@ -86,19 +98,33 @@
             $results = DB::select("SELECT * FROM planning WHERE '$gebruikdatum' = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                switch ($result->werkzaamheden) {
+                    case "Reparatie":
+                        $color = "#188754";
+                        break;
+                    case "Grote beurt":
+                        $color = "#FFC009";
+                        break;
+                    case "Kleine beurt":
+                        $color = "#17A2B8";
+                        break;
+                    case "APK keuring":
+                        $color = "#007BFF";
+                        break;
+                }
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
-                echo "<br>";
+                echo "<br><i>";
                 echo $result->omschrijving;
-                echo "<br>";
+                echo "</i><br><b>Kenteken:</b> ";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo "<div class=\"col py-2 my-1\" style=\"background-color: #afccb9;\">Items: ";
                 echo $items;
                 echo "</div>";
             }
@@ -116,19 +142,33 @@
             $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                switch ($result->werkzaamheden) {
+                    case "Reparatie":
+                        $color = "#188754";
+                        break;
+                    case "Grote beurt":
+                        $color = "#FFC009";
+                        break;
+                    case "Kleine beurt":
+                        $color = "#17A2B8";
+                        break;
+                    case "APK keuring":
+                        $color = "#007BFF";
+                        break;
+                }
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
-                echo "<br>";
+                echo "<br><i>";
                 echo $result->omschrijving;
-                echo "<br>";
+                echo "</i><br><b>Kenteken:</b> ";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo "<div class=\"col py-2 my-1\" style=\"background-color: #afccb9;\">Items: ";
                 echo $items;
                 echo "</div>";
             }
@@ -146,19 +186,33 @@
             $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                switch ($result->werkzaamheden) {
+                    case "Reparatie":
+                        $color = "#188754";
+                        break;
+                    case "Grote beurt":
+                        $color = "#FFC009";
+                        break;
+                    case "Kleine beurt":
+                        $color = "#17A2B8";
+                        break;
+                    case "APK keuring":
+                        $color = "#007BFF";
+                        break;
+                }
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
-                echo "<br>";
+                echo "<br><i>";
                 echo $result->omschrijving;
-                echo "<br>";
+                echo "</i><br><b>Kenteken:</b> ";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo "<div class=\"col py-2 my-1\" style=\"background-color: #afccb9;\">Items: ";
                 echo $items;
                 echo "</div>";
             }
@@ -176,19 +230,33 @@
             $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                switch ($result->werkzaamheden) {
+                    case "Reparatie":
+                        $color = "#188754";
+                        break;
+                    case "Grote beurt":
+                        $color = "#FFC009";
+                        break;
+                    case "Kleine beurt":
+                        $color = "#17A2B8";
+                        break;
+                    case "APK keuring":
+                        $color = "#007BFF";
+                        break;
+                }
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
-                echo "<br>";
+                echo "<br><i>";
                 echo $result->omschrijving;
-                echo "<br>";
+                echo "</i><br><b>Kenteken:</b> ";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo "<div class=\"col py-2 my-1\" style=\"background-color: #afccb9;\">Items: ";
                 echo $items;
                 echo "</div>";
             }
@@ -206,19 +274,33 @@
             $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                switch ($result->werkzaamheden) {
+                    case "Reparatie":
+                        $color = "#188754";
+                        break;
+                    case "Grote beurt":
+                        $color = "#FFC009";
+                        break;
+                    case "Kleine beurt":
+                        $color = "#17A2B8";
+                        break;
+                    case "APK keuring":
+                        $color = "#007BFF";
+                        break;
+                }
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
-                echo "<br>";
+                echo "<br><i>";
                 echo $result->omschrijving;
-                echo "<br>";
+                echo "</i><br><b>Kenteken:</b> ";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo "<div class=\"col py-2 my-1\" style=\"background-color: #afccb9;\">Items: ";
                 echo $items;
                 echo "</div>";
             }
@@ -236,19 +318,33 @@
             $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                switch ($result->werkzaamheden) {
+                    case "Reparatie":
+                        $color = "#188754";
+                        break;
+                    case "Grote beurt":
+                        $color = "#FFC009";
+                        break;
+                    case "Kleine beurt":
+                        $color = "#17A2B8";
+                        break;
+                    case "APK keuring":
+                        $color = "#007BFF";
+                        break;
+                }
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
-                echo "<br>";
+                echo "<br><i>";
                 echo $result->omschrijving;
-                echo "<br>";
+                echo "</i><br><b>Kenteken:</b> ";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo "<div class=\"col py-2 my-1\" style=\"background-color: #afccb9;\">Items: ";
                 echo $items;
                 echo "</div>";
             }
@@ -266,19 +362,33 @@
             $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 6px solid #458059;background-color: #afccb9;border-radius: 0px 20px 20px 0px;text-align:left; \">";
+                switch ($result->werkzaamheden) {
+                    case "Reparatie":
+                        $color = "#188754";
+                        break;
+                    case "Grote beurt":
+                        $color = "#FFC009";
+                        break;
+                    case "Kleine beurt":
+                        $color = "#17A2B8";
+                        break;
+                    case "APK keuring":
+                        $color = "#007BFF";
+                        break;
+                }
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
-                echo "<br>";
+                echo "<br><i>";
                 echo $result->omschrijving;
-                echo "<br>";
+                echo "</i><br><b>Kenteken:</b> ";
                 echo $result->kenteken;
                 echo "</div>";
                 $items = $items + 1;
             }
             if ($items > 0){
-                echo "<div class=\"col bg-secondary text-white py-3 my-1\">Items: ";
+                echo "<div class=\"col py-2 my-1\" style=\"background-color: #afccb9;\">Items: ";
                 echo $items;
                 echo "</div>";
             }

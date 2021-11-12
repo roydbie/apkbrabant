@@ -3,20 +3,25 @@ use Illuminate\Support\Facades\DB;
 $results = DB::select("SELECT * FROM planning WHERE status = 'in afwachting' OR status = 'gerepareerd'");
 $arrayPending = [];
 for ($i = 0; $i < count($results); $i++) {
-    array_push($arrayPending, (object) ['kenteken' => $results[$i]->kenteken, 'status' => $results[$i]->status]);
+    array_push($arrayPending, array("kenteken" => $results[$i]->kenteken, "status" => $results[$i]->status));
 }
-$filteredarrayPending = [];
-for ($i = 0; $i < count($arrayPending); $i++) {
-    if(count($filteredarrayPending)){
-        if ($arrayPending[$i]->kenteken == end($filteredarrayPending)->kenteken){
-            //
-        } else {
-            array_push($filteredarrayPending, $arrayPending[$i]);
+$filteredarrayPending = unique_multidim_array($arrayPending,'kenteken');
+
+function unique_multidim_array($array, $key) {
+    $temp_array = array();
+    $i = 0;
+    $key_array = array();
+
+    foreach($array as $val) {
+        if (!in_array($val[$key], $key_array)) {
+            $key_array[$i] = $val[$key];
+            $temp_array[$i] = $val;
         }
-    } else {
-        array_push($filteredarrayPending, $arrayPending[$i]);
+        $i++;
     }
+    return $temp_array;
 }
+
 
 ?>
 
@@ -56,24 +61,27 @@ for ($i = 0; $i < count($arrayPending); $i++) {
 
 <div id="containment-wrapper">
     <?php
-        for ($i = 0; $i < count($filteredarrayPending); $i++) {
-            $kenteken = $filteredarrayPending[$i]->kenteken;
+    $number = 0;
+    foreach ($filteredarrayPending as $key => $value) {
+            $kenteken = $value["kenteken"];
+
             $merk = DB::select("SELECT merk FROM autos WHERE kenteken = '$kenteken'");
 
-            print "<div id=\"car$i\" class=\"draggable ui-widget-content\">";
+            print "<div id=\"car$number\" class=\"draggable ui-widget-content\">";
             if($merk){
                 $merklogo = $merk[0]->merk;
                 print "<img src=\"/img/brands/$merklogo.png\" class=\"brand\" alt=\"notfound\"><br>";
             } else {
                 print "<p style=\"font-size:30px;margin-top:25px;margin-bottom:0;\">&#10060;</p>";
             }
-            if($filteredarrayPending[$i]->status == 'in afwachting'){
+            if($value["status"] == 'in afwachting'){
                 print "<button class=\"btn btn-danger my-4 btn-sm\" onclick=\"window.location.href='/kentekensearch/kenteken=$kenteken'\">$kenteken</button>";
-            } elseif($filteredarrayPending[$i]->status == 'gerepareerd') {
+            } elseif($value["status"] == 'gerepareerd') {
                 print "<button class=\"btn btn-success my-4 btn-sm\" onclick=\"window.location.href='/kentekensearch/kenteken=$kenteken'\">$kenteken</button>";
             }
 
             print "</div>";
+            $number = $number + 1;
         }
     ?>
 </div>
@@ -85,6 +93,7 @@ for ($i = 0; $i < count($arrayPending); $i++) {
         $("#car2").offset({top: localStorage.getItem("car2positieY"), left: localStorage.getItem("car2positieX")});
         $("#car3").offset({top: localStorage.getItem("car3positieY"), left: localStorage.getItem("car3positieX")});
         $("#car4").offset({top: localStorage.getItem("car4positieY"), left: localStorage.getItem("car4positieX")});
+        $("#car5").offset({top: localStorage.getItem("car5positieY"), left: localStorage.getItem("car5positieX")});
     }
 
     $( function() {
@@ -93,6 +102,7 @@ for ($i = 0; $i < count($arrayPending); $i++) {
         $( "#car2" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#car3" ).draggable({ containment: "#containment-wrapper", scroll: false });
         $( "#car4" ).draggable({ containment: "#containment-wrapper", scroll: false });
+        $( "#car5" ).draggable({ containment: "#containment-wrapper", scroll: false });
     } );
 
     $('#car0').draggable(
@@ -147,6 +157,17 @@ for ($i = 0; $i < count($arrayPending); $i++) {
                 var yPos = offset.top;
                 localStorage.setItem("car4positieX", xPos);
                 localStorage.setItem("car4positieY", yPos);
+            }
+        });
+
+    $('#car5').draggable(
+        {
+            drag: function(){
+                var offset = $(this).offset();
+                var xPos = offset.left;
+                var yPos = offset.top;
+                localStorage.setItem("car5positieX", xPos);
+                localStorage.setItem("car5positieY", yPos);
             }
         });
 </script>

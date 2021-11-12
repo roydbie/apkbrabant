@@ -63,7 +63,7 @@
                     </thead>
                     <tbody>
                     @foreach ($werkorders as $werkorder)
-                        @if($werkorder->werkzaamheden == 'Reparatie' || $werkorder->werkzaamheden == 'Grote beurt' || $werkorder->werkzaamheden == 'Kleine beurt')
+                        @if($werkorder->werkzaamheden == 'Reparatie' || $werkorder->werkzaamheden == 'Grote beurt' || $werkorder->werkzaamheden == 'Kleine beurt' || $werkorder->werkzaamheden == 'APK keuring')
                             <tr style=" background-color:#ededed;">
                                 <th scope="row">{{$werkorder->id}}</th>
                                 <td>{{$werkorder->werkzaamheden}}</td>
