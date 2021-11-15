@@ -95,7 +95,7 @@
             <?php
             $datum = date('Y-m-d', strtotime($datumbegin->format('Y-m-d')));
             $gebruikdatum = $_GET["gebruikdatum"];
-            $results = DB::select("SELECT * FROM planning WHERE '$gebruikdatum' = '$datum'");
+            $results = DB::select("SELECT * FROM planning WHERE " . $gebruikdatum . " = '$datum'");
             $items = 0;
             foreach ($results as $result){
                 switch ($result->werkzaamheden) {
