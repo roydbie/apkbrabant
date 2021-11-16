@@ -112,7 +112,7 @@
                         $color = "#007BFF";
                         break;
                 }
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;cursor:pointer;border-radius: 8px;text-align:left; \" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
@@ -156,7 +156,7 @@
                         $color = "#007BFF";
                         break;
                 }
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;cursor:pointer;border-radius: 8px;text-align:left; \" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
@@ -200,7 +200,7 @@
                         $color = "#007BFF";
                         break;
                 }
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;cursor:pointer;border-radius: 8px;text-align:left; \" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
@@ -244,7 +244,7 @@
                         $color = "#007BFF";
                         break;
                 }
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;cursor:pointer;border-radius: 8px;text-align:left; \" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
@@ -288,7 +288,7 @@
                         $color = "#007BFF";
                         break;
                 }
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;cursor:pointer;border-radius: 8px;text-align:left; \" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
@@ -332,7 +332,7 @@
                         $color = "#007BFF";
                         break;
                 }
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;cursor:pointer;border-radius: 8px;text-align:left; \" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;
@@ -376,7 +376,7 @@
                         $color = "#007BFF";
                         break;
                 }
-                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;border-radius: 8px;text-align:left; \">";
+                echo "<div class=\"col py-2 my-1 px-4\" style=\"border-left: 8px solid $color;background-color: #ededed;cursor:pointer;border-radius: 8px;text-align:left; \" onclick=\"location.href = '/kentekensearch/kenteken=$result->kenteken'\">";
                 echo substr($result->{str_replace('datum', '', $gebruikdatum) . 'tijd'}, 0, -3);
                 echo "<br>";
                 echo $result->werkzaamheden;

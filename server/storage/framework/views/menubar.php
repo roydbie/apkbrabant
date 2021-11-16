@@ -85,7 +85,7 @@
                 </div>
                 Stap terug
             </div>
-            <div class="menu-item">
+            <div class="menu-item" onclick="location.href='/logout';">
                 <div class="menucircle m-auto">
                     <p class="pt-2" style="font-size: 25px;">&#128237;</p>
                 </div>

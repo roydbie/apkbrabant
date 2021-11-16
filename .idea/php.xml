@@ -109,6 +109,7 @@
       <path value="$PROJECT_DIR$/server/vendor/sebastian/global-state" />
       <path value="$PROJECT_DIR$/server/vendor/sebastian/code-unit-reverse-lookup" />
       <path value="$PROJECT_DIR$/server/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/server/vendor/laravel/ui" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3">
