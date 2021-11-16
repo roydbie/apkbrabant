@@ -25,7 +25,10 @@
 
     }
 </style>
-<h5 class="mt-3" style="margin-left:50px;">Welkom Roy de Bie!</h5>
+<h5 class="mt-3" style="margin-left:50px;">Welkom <?php
+    use Illuminate\Support\Facades\Auth;
+
+    echo Auth::user()->name?>!</h5>
 <div class="menubar">
     <div class="row">
         <div class="col" style="margin-left:50px;">
