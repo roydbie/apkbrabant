@@ -25,7 +25,7 @@
 
     }
 </style>
-<h5 class="mt-3" style="margin-left:50px;">Welkom!</h5>
+<h5 class="mt-3" style="margin-left:50px;">Welkom Roy de Bie!</h5>
 <div class="menubar">
     <div class="row">
         <div class="col" style="margin-left:50px;">
@@ -85,7 +85,7 @@
                 </div>
                 Stap terug
             </div>
-            <div class="menu-item" onclick="location.href='/login'">
+            <div class="menu-item" onclick="location.href='/logout';">
                 <div class="menucircle m-auto">
                     <p class="pt-2" style="font-size: 25px;">&#128237;</p>
                 </div>
@@ -110,15 +110,4 @@
             naarKentekenSearch();
         }
     });
-
-    function uitloggen() {
-        if (window.confirm("Weet u zeker dat u wilt uitloggen?"))
-        {
-            location.href = `/logout`;
-        }
-        else
-        {
-            // They clicked no
-        }
-    }
 </script>
