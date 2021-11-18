@@ -1,3 +1,27 @@
+<?php
+use Illuminate\Support\Facades\DB;
+
+session_start();
+if (isset($_SESSION["gebruikersnaam"])){
+    //
+} elseif (isset($_GET["gebruikersnaam"])) {
+    $results = DB::select("SELECT * FROM gebruikers WHERE gebruikersnaam = '" . $_GET["gebruikersnaam"] . "'");
+    if ($results){
+        $_SESSION["gebruikersnaam"] = $_GET["gebruikersnaam"];
+        $_SESSION["ingelogd"] = 1;
+    } else {
+        header("Location: /login");
+        exit();
+    }
+} else {
+    header("Location: /login");
+    exit();
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" style="overflow-x:hidden;">
     <head>
