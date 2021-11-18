@@ -29,8 +29,9 @@
     <?php
     require __DIR__. '/menubar.php';
     ?>
+    @yield('huidigepagina')
 
-    <br><br>
+    <br>
 
     @yield('content')
 

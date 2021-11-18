@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('huidigepagina')
+    <h6 style="margin-left:2.5%;margin-top:10px;margin-bottom: 0px!important;">Agenda</h6>
+@stop
+
 @section('content')
 
 <style>

@@ -19,12 +19,16 @@
 
     @extends('layouts.app')
 
+    @section('huidigepagina')
+        <h6 style="margin-left:2.5%;margin-top:10px;margin-bottom: 0px!important;">Kenteken profiel > Nieuw werkorder</h6>
+    @stop
+
     @section('content')
         <style>
             #containment-wrapper {
-                width: 93.5%;
-                margin-left:50px;
-                height:600px;
+                width: 95%;
+                margin-left:2.5%;
+                min-height:34vw;
                 margin-bottom:50px;
                 padding: 10px;
                 text-align: center;

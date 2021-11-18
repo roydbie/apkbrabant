@@ -30,6 +30,10 @@ Route::get('/kentekensearch', function () {
     return view('kentekensearch');
 })->middleware('auth');
 
+Route::get('/werkorder', function () {
+    return view('werkorder');
+})->middleware('auth');
+
 Route::get('/nieuw_werkorder', function () {
     return view('nieuw_werkorder');
 })->middleware('auth');

@@ -3,12 +3,16 @@
 @endphp
 @extends('layouts.app')
 
+@section('huidigepagina')
+    <h6 style="margin-left:2.5%;margin-top:10px;margin-bottom: 0px!important;">Kenteken profiel</h6>
+@stop
+
     @section('content')
         <style>
             #containment-wrapper {
-                width: 93.5%;
-                margin-left:50px;
-                min-height:600px;
+                width: 95%;
+                margin-left:2.5%;
+                min-height:34vw;
                 margin-bottom:50px;
                 padding: 10px;
                 text-align: center;
@@ -84,7 +88,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <button id="detailsButton{{$werkorder->id}}" class="btn btn-primary btn-sm" onclick="showDetails({{$werkorder->id}});">Bekijk details</button>
+                                    <button id="detailsButton{{$werkorder->id}}" class="btn btn-primary btn-sm" onclick="location.href = '/werkorder?id={{$werkorder->id}}'">Bekijk details</button>
                                     <button class="btn btn-danger btn-sm" onclick="verwijderWerkorder('{{$werkorder->kenteken}}', {{$werkorder->id}});">x</button>
                                 </td>
                             </tr>

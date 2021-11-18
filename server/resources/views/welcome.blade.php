@@ -27,6 +27,10 @@ function unique_multidim_array($array, $key) {
 
 @extends('layouts.app')
 
+@section('huidigepagina')
+    <h6 style="margin-left:2.5%;margin-top:10px;margin-bottom: 0px!important;">Overzicht</h6>
+@stop
+
 @section('content')
 
 <style>

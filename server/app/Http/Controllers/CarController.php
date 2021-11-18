@@ -43,7 +43,7 @@ class CarController extends Controller
     public function insertSubwerkorder($kenteken, $planning_id, $omschrijving, $aantal, $kostenPerStuk, $kostenTotaal)
     {
         DB::insert("INSERT INTO werkorders (planning_id, omschrijving, aantal, kosten_per_stuk, kosten_totaal) values ('$planning_id', '$omschrijving', '$aantal', '$kostenPerStuk', '$kostenTotaal')");
-        return redirect("/kentekensearch/kenteken=$kenteken");
+        return redirect("/werkorder?id=$planning_id");
     }
 
     public function delete($kenteken, $id)
