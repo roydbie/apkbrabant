@@ -14,7 +14,7 @@ Doordat de competitie geen visuele optie had om voertuigen die op dat moment in 
 
 * Clone of download het project.
 * Navigeer naar de map `server` en installeer de missende dependencies met de command `npm install`. Let op: hiervoor heb je dus node package manager voor nodig.
-* SQL Stappen hier
+* [Installeer](https://dev.mysql.com/doc/refman/8.0/en/installing.html) MySQL op je besturingssysteem
 
 ### Overzicht
 
