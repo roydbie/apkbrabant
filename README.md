@@ -28,7 +28,7 @@ View: `server/resources/views` <br>
 
 ## Auteurs
 
-Roy de Bie 
+Roy de Bie <br>
 Furkan Öztürk
 
 ## Versies
